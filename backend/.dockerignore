@@ -16,6 +16,10 @@ venv/
 # macOS specific files
 .DS_Store
 
+# Git
+.git/
+.gitignore
+
 # Log and temporary files
 *.log
 *.swp
@@ -41,6 +45,3 @@ pytest_cache/
 
 # Environment Variables
 .env
-
-# Docker関連（個人環境用）
-docker-compose.override.yml
