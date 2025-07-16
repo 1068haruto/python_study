@@ -1,0 +1,46 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+
+# macOS specific files
+.DS_Store
+
+# Log and temporary files
+*.log
+*.swp
+*.tmp
+*.bak
+
+# Database files (MySQL and others)
+*.db
+*.sqlite3
+db/
+*.ibd
+*.frm
+*.myd
+*.myi
+*.sdi
+*.err
+
+# Test
+htmlcov/
+coverage.xml
+.coverage
+pytest_cache/
+
+# Environment Variables
+.env
+
+# Docker関連（個人環境用）
+docker-compose.override.yml
