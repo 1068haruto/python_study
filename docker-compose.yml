@@ -1,18 +1,4 @@
-version: '3.9'
-
 services:
-  backend:
-    build: ./backend
-    container_name: fastapi_app
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/code
-    depends_on:
-      - db
-    env_file:
-      - .env
-
   db:
     image: mysql:8.0
     container_name: mysql_db
@@ -27,3 +13,27 @@ services:
       - ./db:/var/lib/mysql
     env_file:
       - .env
+
+  backend:
+    build: ./backend
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/code
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  frontend:
+    build: ./frontend
+    container_name: react_app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # ホストの node_modules を使わないようにする
+    depends_on:
+      - backend
+    working_dir: /app
