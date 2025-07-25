@@ -15,7 +15,8 @@ services:
       - .env
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
     container_name: fastapi_app
     ports:
       - "8000:8000"
@@ -27,7 +28,8 @@ services:
       - .env
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
     container_name: react_app
     ports:
       - "3000:3000"
