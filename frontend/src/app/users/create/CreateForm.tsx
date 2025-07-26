@@ -8,6 +8,7 @@ export default function CreateForm() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [userId, setUserId] = useState<number | null>(null);
 
   // フォーム送信時に実行
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,6 +20,7 @@ export default function CreateForm() {
     });
     const data = await res.json();
     setMessage(data.message);
+    setUserId(data.user_id);
   };
 
   return (
@@ -28,6 +30,7 @@ export default function CreateForm() {
       <input type="password" placeholder="パスワード" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button type="submit">作成</button>
       <p>{message}</p>
+      {userId !== null && <p>ユーザーID: {userId}</p>}
     </form>
   );
 }
