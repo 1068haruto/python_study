@@ -1,0 +1,25 @@
+# Python cache and build
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+
+# virtualenv（backend 配下に作る場合のみ）
+# .venv/
+
+# # Environment Variables
+*.env
+
+# Logs / Temp
+*.log
+*.swp
+*.tmp
+*.bak
+*.pid
+
+# Test
+htmlcov/
+coverage.xml
+.coverage
+pytest_cache/

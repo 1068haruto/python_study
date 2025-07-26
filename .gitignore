@@ -1,13 +1,5 @@
-# Python artifacts
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-
 # Virtual environments
 .venv/
-env/
-venv/
 
 # Editor/IDE specific files
 .vscode/
@@ -15,12 +7,6 @@ venv/
 
 # macOS specific files
 .DS_Store
-
-# Log and temporary files
-*.log
-*.swp
-*.tmp
-*.bak
 
 # Database files (MySQL and others)
 *.db
@@ -33,14 +19,15 @@ db/
 *.sdi
 *.err
 
-# Test
-htmlcov/
-coverage.xml
-.coverage
-pytest_cache/
+# Logs / Temp
+*.log
+*.swp
+*.tmp
+*.bak
+*.pid
 
 # Environment Variables
-.env
+*.env
 
-# Docker関連（個人環境用）
+# Docker - local override only
 docker-compose.override.yml
