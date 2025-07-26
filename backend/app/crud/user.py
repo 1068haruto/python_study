@@ -14,5 +14,5 @@ def delete_user(db: Session, user_id: int):
     if user:
         db.delete(user)
         db.commit()
-        return True
-    return False
+        return True  # ← 成功時
+    return False     # ← 失敗時

@@ -9,11 +9,11 @@ router = APIRouter()
 @router.post("/users/create")
 def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
     created_user = create_user(db, user)
-    return {"message": "アカウント作成成功！", "user_id": created_user.id}
+    return {"message": "作成成功！", "user_id": created_user.id}
 
 @router.delete("/users/delete/{user_id}")
 def delete_user_endpoint(user_id: int, db: Session = Depends(get_db)):
-    result = delete_user(db, user_id)
-    if not result:
+    success = delete_user(db, user_id)
+    if not success:
         raise HTTPException(status_code=404, detail="User not found")
-    return {"message": "アカウント削除成功！"}
+    return {"message": "削除成功！", "user_id": user_id}
