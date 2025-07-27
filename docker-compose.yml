@@ -11,6 +11,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./db:/var/lib/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d  # 文字化けさせないためにマウント
     env_file:
       - .env
 
