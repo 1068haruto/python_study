@@ -31,3 +31,6 @@ db/
 
 # Docker - local override only
 docker-compose.override.yml
+
+# cookie
+cookies.txt
