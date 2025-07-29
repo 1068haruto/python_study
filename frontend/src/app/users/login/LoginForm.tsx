@@ -6,7 +6,6 @@ import styles from './LoginForm.module.scss';
 export default function LoginForm() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
   const [message, setMessage] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -17,18 +16,14 @@ export default function LoginForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, password }),
+        credentials: 'include', // ← Cookie送信
       });
 
       if (!loginRes.ok) throw new Error('ログイン失敗');
 
-      const data = await loginRes.json();
-      setToken(data.access_token);
-
       const meRes = await fetch('http://localhost:8000/me', {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${data.access_token}`,
-        },
+        credentials: 'include', // ← Cookie送信
       });
 
       if (!meRes.ok) throw new Error('認証失敗');
@@ -37,7 +32,6 @@ export default function LoginForm() {
       setMessage(`ログイン成功！こんにちは ${me.name} さん`);
     } catch (err) {
       setMessage('ログインに失敗した。');
-      setToken('');
     }
   };
 
