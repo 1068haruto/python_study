@@ -36,3 +36,10 @@ def read_current_user(current_user: User = Depends(get_current_user)):
         "id": current_user.id,
         "name": current_user.name
     }
+
+
+@router.post("/logout")
+def logout():
+    response = JSONResponse(content={"message": "ログアウト成功！"})
+    response.delete_cookie(key="access_token", path="/")
+    return response
