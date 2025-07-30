@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 50px auto;
+  gap: 12px;
+
+  button {
+    padding: 8px;
+    background-color: #720a0a;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #af0505;
+    }
+  }
+}
