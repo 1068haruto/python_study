@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LoginForm from './login/LoginForm'
 import LogoutButton from './logout/LogoutButton'
 import CreateForm from './create/CreateForm';
 import DeleteButton from './delete/DeleteButton';
@@ -11,7 +10,7 @@ import UserList from './list/UserList';
 import styles from './UsersPage.module.scss';
 
 export default function UsersPage() {
-  const [activeTab, setActiveTab] = useState<'login' | 'logout' | 'create' | 'list' | 'update' | 'delete' | null>(null);
+  const [activeTab, setActiveTab] = useState<'logout' | 'create' | 'list' | 'update' | 'delete' | null>(null);
 	const router = useRouter();
 
   return (
@@ -20,7 +19,6 @@ export default function UsersPage() {
 
       {/* ナビゲーションボタン */}
       <div className={styles.buttonGroup}>
-        <button onClick={() => setActiveTab('login')}>ログイン</button>
         <button onClick={() => setActiveTab('logout')}>ログアウト</button>
         <button onClick={() => setActiveTab('create')}>作成</button>
 				<button onClick={() => setActiveTab('list')}>一覧</button>
@@ -31,7 +29,6 @@ export default function UsersPage() {
 
       {/* 表示エリア */}
       <div>
-        {activeTab === 'login' && <LoginForm />}
         {activeTab === 'logout' && <LogoutButton />}
         {activeTab === 'create' && <CreateForm />}
 				{activeTab === 'list' && <UserList />}
