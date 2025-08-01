@@ -1,12 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { fetchCurrentUser } from '@/lib/fetchCurrentUser';
 import styles from './LoginForm.module.scss';
 
 export default function LoginForm() {
+  const router = useRouter();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const { setUser } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,22 +21,20 @@ export default function LoginForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, password }),
-        credentials: 'include', // ← Cookie送信
+        credentials: 'include',
       });
 
-      if (!loginRes.ok) throw new Error('ログイン失敗');
+      if (!loginRes.ok) {
+        throw new Error('おっと、レスポンスが正常じゃないぞ。');
+      }
 
-      const meRes = await fetch('http://localhost:8000/me', {
-        method: 'GET',
-        credentials: 'include', // ← Cookie送信
-      });
+      const me = await fetchCurrentUser();
+      if (!me) throw new Error('おっと、認証が失敗しているぞ。');
 
-      if (!meRes.ok) throw new Error('認証失敗');
-
-      const me = await meRes.json();
-      setMessage(`ログイン成功！こんにちは ${me.name} さん`);
+      setUser(me);
+      router.push('/users');
     } catch (err) {
-      setMessage('ログインに失敗した。');
+      setMessage('ログイン失敗。');
     }
   };
 
