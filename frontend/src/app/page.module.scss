@@ -12,9 +12,7 @@
   	gap: 1rem;
 
 
-  	button,
-    a {
-      // Linkは <a>タグとしてレンダリングされる為、セレクタにaも指定し、同スタイルを適用。
+    a {  // Linkは <a>タグとしてレンダリングされる
     	padding: 0.5rem 1rem;
     	background-color: #14375e;
     	color: white;
