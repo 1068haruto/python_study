@@ -24,7 +24,7 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=False,  # ローカル環境なので False
+        secure=False,
         samesite="Lax"
     )
     return response
