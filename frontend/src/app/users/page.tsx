@@ -32,7 +32,6 @@ export default function UsersPage() {
         ) : (
           <>
             <button onClick={() => setActiveTab('logout')}>ログアウト</button>
-            <button onClick={() => setActiveTab('create')}>作成</button>
             <button onClick={() => setActiveTab('list')}>一覧</button>
             <button onClick={() => setActiveTab('update')}>更新</button>
 				    <button onClick={() => setActiveTab('delete')}>削除</button>
