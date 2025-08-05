@@ -2,17 +2,21 @@
 fastapi
 
 # Sever
-uvicorn[standard]          # 非同期処理に対応したASGIサーバー(フレームワークの実行に使用)
+uvicorn[standard]          # 非同期処理に対応したASGIサーバー
 
 # DB
-pymysql                    # PythonからMySQLデータベースへの接続に使用
+pymysql                    # PythonからMySQL DBへの接続に使用
 sqlalchemy                 # ORM
 alembic                    # migration
 
 # Auth
-passlib[bcrypt]            # パスワードのハッシュ化
+passlib[bcrypt]            # PWのハッシュ化
 python-jose[cryptography]  # JWTの生成と検証
 
 # Others
 python-dotenv              # .envの読み込み(uvicornあるから要らないかも)
 cryptography               # 暗号化やハッシュ化など
+
+# test
+pytest
+httpx
