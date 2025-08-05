@@ -1,5 +1,5 @@
 ---
-name: for python_study
+name: issue_template
 about: for python_study
 title: 'feat: fix: chore:'
 labels: ''
