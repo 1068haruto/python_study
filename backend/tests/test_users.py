@@ -28,6 +28,7 @@ def test_update_user(create_test_user):
         "password": "updated_password"
     })
     assert response.status_code == 200
+    assert "user_id" in response.json()
 
 
 def test_delete_user(create_test_user):
@@ -35,3 +36,4 @@ def test_delete_user(create_test_user):
 
     response = client.delete(f"/users/delete/{created_user_id}")
     assert response.status_code == 200
+    assert "user_id" in response.json()
