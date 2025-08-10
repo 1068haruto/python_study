@@ -4,23 +4,31 @@ import { useState } from 'react';
 import styles from './CreateForm.module.scss';
 
 export default function CreateForm() {
-  // 状態管理
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [createdUserId, setcreatedUserId] = useState<number | null>(null);
 
-  // フォーム送信時に実行
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:8000/users/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, password }),
-    });
-    const data = await res.json();
-    setMessage(data.message);
-    setcreatedUserId(data.user_id);
+
+    try {
+      const res = await fetch('http://localhost:8000/users/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, password }),
+      });
+
+      if (!res.ok) {
+        throw new Error('レスポンスが正常ではない。');
+      }
+
+      const data = await res.json();
+      setMessage('作成成功！');
+      setcreatedUserId(data.user_id);
+    } catch (error) {
+      setMessage('作成失敗。');
+    }
   };
 
   return (

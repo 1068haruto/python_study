@@ -11,7 +11,6 @@ def test_create_user():
         "password": "testpassword"
     })
     assert response.status_code == 200
-    assert response.json()["message"] == "作成成功！"
     assert "user_id" in response.json()
 
 
