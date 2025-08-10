@@ -8,14 +8,22 @@ export default function DeleteButton() {
   const [message, setMessage] = useState('');
   const [deletedUserId, setDeletedUserId] = useState<number | null>(null);  // 入力IDと削除成功IDの管理を分離するため
 
-  // 削除ボタン押下時に実行
   const handleDelete = async () => {
-    const res = await fetch(`http://localhost:8000/users/delete/${userId}`, {
-      method: 'DELETE',
-    });
-    const data = await res.json();
-    setMessage(data.message || '削除失敗。');
-    setDeletedUserId(data.user_id);
+    try {
+      const res = await fetch(`http://localhost:8000/users/delete/${userId}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error('レスポンスが正常ではない。');
+      }
+
+      const data = await res.json();
+      setMessage('削除成功！');
+      setDeletedUserId(data.user_id);
+    } catch {
+      setMessage('削除失敗。');
+    }
   };
 
   return (

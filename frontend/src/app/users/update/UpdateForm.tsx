@@ -10,23 +10,30 @@ export default function UpdateForm() {
   const [message, setMessage] = useState('');
   const [updatedUserId, setUpdatedUserId] = useState<number | null>(null);
 
-  // 更新ボタン押下時に実行
 	const handleSubmit = async (e: React.FormEvent) => {
   	e.preventDefault();
 
-  	const body: any = {};
-  	if (name !== '') body.name = name;
-  	if (password !== '') body.password = password;
+    try {
+      const body: any = {};
+  	  if (name !== '') body.name = name;
+   	  if (password !== '') body.password = password;
 
-  	const res = await fetch(`http://localhost:8000/users/update/${userId}`, {
- 	  	method: 'PUT',
-    	headers: { 'Content-Type': 'application/json' },
-    	body: JSON.stringify(body),
-  	});
+      const res = await fetch(`http://localhost:8000/users/update/${userId}`, {
+ 	  	  method: 'PUT',
+    	  headers: { 'Content-Type': 'application/json' },
+    	  body: JSON.stringify(body),
+  	  });
 
-  	const data = await res.json();
-  	setMessage(data.message);
-    setUpdatedUserId(data.user_id);
+      if (!res.ok) {
+        throw new Error('レスポンスが正常ではない。');
+      }
+
+      const data = await res.json();
+      setMessage('更新成功！');
+      setUpdatedUserId(data.user_id);
+    } catch {
+      setMessage('更新失敗。');
+    }
 	};
 
   return (
