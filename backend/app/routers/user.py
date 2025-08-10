@@ -26,7 +26,7 @@ def update_user_endpoint(user_id: int, user: UserUpdate, db: Session = Depends(g
     updated_user = update_user(db, user_id, user)
     if updated_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return {"message": "更新成功！", "user_id": updated_user.id}
+    return {"user_id": updated_user.id}
 
 
 @router.delete("/users/delete/{user_id}")
@@ -34,4 +34,4 @@ def delete_user_endpoint(user_id: int, db: Session = Depends(get_db)):
     success = delete_user(db, user_id)
     if not success:
         raise HTTPException(status_code=404, detail="User not found")
-    return {"message": "削除成功！", "user_id": user_id}
+    return {"user_id": user_id}

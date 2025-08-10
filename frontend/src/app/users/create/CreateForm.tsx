@@ -26,7 +26,7 @@ export default function CreateForm() {
       const data = await res.json();
       setMessage('作成成功！');
       setcreatedUserId(data.user_id);
-    } catch (error) {
+    } catch {
       setMessage('作成失敗。');
     }
   };

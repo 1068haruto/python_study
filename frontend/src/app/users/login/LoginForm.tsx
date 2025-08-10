@@ -25,15 +25,17 @@ export default function LoginForm() {
       });
 
       if (!loginRes.ok) {
-        throw new Error('おっと、レスポンスが正常じゃないぞ。');
+        throw new Error('レスポンスが正常ではない。');
       }
 
       const me = await fetchCurrentUser();
-      if (!me) throw new Error('おっと、認証が失敗しているぞ。');
+      if (!me) {
+        throw new Error('認証が失敗している。');
+      }
 
       setUser(me);
       router.push('/users');
-    } catch (err) {
+    } catch (error) {
       setMessage('ログイン失敗。');
     }
   };

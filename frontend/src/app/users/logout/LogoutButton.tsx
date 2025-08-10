@@ -18,7 +18,7 @@ export default function LogoutButton() {
 			})
 
 			if (!res.ok) {
-        throw new Error('おっと、レスポンスが正常じゃないぞ。');
+        throw new Error('レスポンスが正常ではない。');
       }
 
 			setUser(null);
