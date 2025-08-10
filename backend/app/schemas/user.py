@@ -1,14 +1,14 @@
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field
+
 
 class UserCreate(BaseModel):
-    name: str
-    password: str
+    name: str = Field(..., min_length=1, description="ユーザー名")
+    password: str = Field(..., min_length=1, description="パスワード")
 
 
 class UserUpdate(BaseModel):
-    name: Optional[str] = None
-    password: Optional[str] = None
+    name: str | None = Field(None, min_length=1, description="更新するユーザー名")
+    password: str | None = Field(None, min_length=1, description="更新するパスワード")
 
 
 class UserOut(BaseModel):
