@@ -1,11 +1,6 @@
-from fastapi.testclient import TestClient
-from app.main import app
-
-
-client = TestClient(app)
-
-
-def test_create_user():
+# create
+# --------------------------------------------------------
+def test_create_user(client):
     response = client.post("/users/create", json={
         "name": "testuser",
         "password": "testpassword"
@@ -14,13 +9,17 @@ def test_create_user():
     assert "user_id" in response.json()
 
 
-def test_read_users():
+# read
+# --------------------------------------------------------
+def test_read_users(client):
     response = client.get("/users/list")
     assert response.status_code == 200
     assert isinstance(response.json(), list)  # レスポンスボディがリスト型であることを確認
 
 
-def test_update_user(create_test_user):
+# update
+# --------------------------------------------------------
+def test_update_user(client, create_test_user):
     created_user_id = create_test_user
 
     response = client.put(f"/users/update/{created_user_id}", json={
@@ -31,7 +30,9 @@ def test_update_user(create_test_user):
     assert "user_id" in response.json()
 
 
-def test_delete_user(create_test_user):
+# delete
+# --------------------------------------------------------
+def test_delete_user(client, create_test_user):
     created_user_id = create_test_user
 
     response = client.delete(f"/users/delete/{created_user_id}")
