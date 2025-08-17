@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
@@ -5,6 +6,12 @@ from app.utils.auth import hash_password
 
 
 def create_user(db: Session, user: UserCreate):
+    # 同名の既存ユーザーがいるか確認
+    existing_user = db.query(User).filter(User.name == user.name).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="そのユーザーはすでに存在している")
+
+    # 新規ユーザー作成
     db_user = User(name=user.name, password=hash_password(user.password))
     db.add(db_user)
     db.commit()
