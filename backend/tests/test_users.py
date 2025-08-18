@@ -41,6 +41,7 @@ def test_create_user_empty_name(client):
     })
     assert response.status_code == 422
     assert "detail" in response.json()
+    assert any(err["loc"] == ["body", "name"] for err in response.json()["detail"])
 
 
 def test_create_user_empty_password(client):
@@ -53,6 +54,7 @@ def test_create_user_empty_password(client):
     })
     assert response.status_code == 422
     assert "detail" in response.json()
+    assert any(err["loc"] == ["body", "password"] for err in response.json()["detail"])
 
 
 def test_create_user_empty_name_and_password(client):
@@ -65,6 +67,8 @@ def test_create_user_empty_name_and_password(client):
     })
     assert response.status_code == 422
     assert "detail" in response.json()
+    assert any(err["loc"] == ["body", "name"] for err in response.json()["detail"])
+    assert any(err["loc"] == ["body", "password"] for err in response.json()["detail"])
 
 
 # --------------------------------------------------------
@@ -79,33 +83,41 @@ def test_read_users(client):
 # --------------------------------------------------------
 # update
 # --------------------------------------------------------
-def test_update_user(client, create_test_user):
+def test_update_user_name_and_password(client, create_test_user):
     """
-    適切な入力の場合、更新成功
+    ユーザー名とパスワードの両方を更新できる
     """
     created_user_id = create_test_user
-
-    # ユーザー名とパスワードを両方更新する場合
     response = client.put(f"/users/update/{created_user_id}", json={
         "name": "updated_user",
         "password": "updated_password"
     })
     assert response.status_code == 200
-    assert "user_id" in response.json()
+    assert response.json()["user_id"] == created_user_id
 
-    # ユーザー名のみを更新する場合
+
+def test_update_user_name_only(client, create_test_user):
+    """
+    ユーザー名のみを更新できる
+    """
+    created_user_id = create_test_user
     response = client.put(f"/users/update/{created_user_id}", json={
         "name": "updated_user"
     })
     assert response.status_code == 200
-    assert "user_id" in response.json()
+    assert response.json()["user_id"] == created_user_id
     
-    # パスワードのみを更新する場合
+
+def test_update_user_password_only(client, create_test_user):
+    """
+    パスワードのみを更新できる
+    """
+    created_user_id = create_test_user
     response = client.put(f"/users/update/{created_user_id}", json={
         "password": "updated_password"
     })
     assert response.status_code == 200
-    assert "user_id" in response.json()
+    assert response.json()["user_id"] == created_user_id
 
 
 def test_update_user_not_found(client):
@@ -120,13 +132,11 @@ def test_update_user_not_found(client):
     assert response.json() == {"detail": "User not found"}
 
 
-def test_update_user_invalid_input(client, create_test_user):
+def test_update_user_with_empty_name(client, create_test_user):
     """
-    無効な入力（min_length=1に違反）の場合、更新失敗
+    ユーザー名が空の場合（min_length=1に違反）、更新失敗
     """
     created_user_id = create_test_user
-
-    # ユーザー名が空の場合
     response = client.put(f"/users/update/{created_user_id}", json={
         "name": "",
         "password": "updated_password"
@@ -135,7 +145,12 @@ def test_update_user_invalid_input(client, create_test_user):
     assert "detail" in response.json()
     assert any(err["loc"] == ["body", "name"] for err in response.json()["detail"])
 
-    # パスワードが空の場合
+
+def test_update_user_with_empty_password(client, create_test_user):
+    """
+    パスワードが空の場合（min_length=1に違反）、更新失敗
+    """
+    created_user_id = create_test_user
     response = client.put(f"/users/update/{created_user_id}", json={
         "name": "updated_user",
         "password": ""
