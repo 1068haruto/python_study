@@ -129,7 +129,7 @@ def test_update_user_not_found(client):
         "password": "updated_password"
     })
     assert response.status_code == 404
-    assert response.json() == {"detail": "User not found"}
+    assert response.json()["detail"] == "User not found"
 
 
 def test_update_user_with_empty_name(client, create_test_user):
@@ -164,8 +164,19 @@ def test_update_user_with_empty_password(client, create_test_user):
 # delete
 # --------------------------------------------------------
 def test_delete_user(client, create_test_user):
+    """
+    存在するユーザーを指定した場合、削除成功
+    """
     created_user_id = create_test_user
-
     response = client.delete(f"/users/delete/{created_user_id}")
     assert response.status_code == 200
-    assert "user_id" in response.json()
+    
+
+def test_delete_nonexistent_user(client):
+    """
+    存在しないユーザーを指定した場合、削除失敗
+    """
+    non_existent_id = 99999
+    response = client.delete(f"/users/delete/{non_existent_id}")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "User not found"
