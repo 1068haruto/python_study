@@ -22,9 +22,9 @@ def create_user(db: Session, user: UserCreate):
 def update_user(db: Session, user_id: int, user_data: UserUpdate):
     db_user = db.query(User).filter(User.id == user_id).first()
     if db_user:
-        if user_data.name is not None and user_data.name != "":
+        if user_data.name is not None:
             db_user.name = user_data.name
-        if user_data.password is not None and user_data.password != "":
+        if user_data.password is not None:
             db_user.password = hash_password(user_data.password)
         db.commit()
         return db_user

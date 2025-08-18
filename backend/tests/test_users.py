@@ -80,14 +80,69 @@ def test_read_users(client):
 # update
 # --------------------------------------------------------
 def test_update_user(client, create_test_user):
+    """
+    適切な入力の場合、更新成功
+    """
     created_user_id = create_test_user
 
+    # ユーザー名とパスワードを両方更新する場合
     response = client.put(f"/users/update/{created_user_id}", json={
         "name": "updated_user",
         "password": "updated_password"
     })
     assert response.status_code == 200
     assert "user_id" in response.json()
+
+    # ユーザー名のみを更新する場合
+    response = client.put(f"/users/update/{created_user_id}", json={
+        "name": "updated_user"
+    })
+    assert response.status_code == 200
+    assert "user_id" in response.json()
+    
+    # パスワードのみを更新する場合
+    response = client.put(f"/users/update/{created_user_id}", json={
+        "password": "updated_password"
+    })
+    assert response.status_code == 200
+    assert "user_id" in response.json()
+
+
+def test_update_user_not_found(client):
+    """
+    存在しないユーザーIDの場合、更新失敗
+    """
+    response = client.put("/users/update/99999", json={
+        "name": "updated_user",
+        "password": "updated_password"
+    })
+    assert response.status_code == 404
+    assert response.json() == {"detail": "User not found"}
+
+
+def test_update_user_invalid_input(client, create_test_user):
+    """
+    無効な入力（min_length=1に違反）の場合、更新失敗
+    """
+    created_user_id = create_test_user
+
+    # ユーザー名が空の場合
+    response = client.put(f"/users/update/{created_user_id}", json={
+        "name": "",
+        "password": "updated_password"
+    })
+    assert response.status_code == 422
+    assert "detail" in response.json()
+    assert any(err["loc"] == ["body", "name"] for err in response.json()["detail"])
+
+    # パスワードが空の場合
+    response = client.put(f"/users/update/{created_user_id}", json={
+        "name": "updated_user",
+        "password": ""
+    })
+    assert response.status_code == 422
+    assert "detail" in response.json()
+    assert any(err["loc"] == ["body", "password"] for err in response.json()["detail"])
 
 
 # --------------------------------------------------------
