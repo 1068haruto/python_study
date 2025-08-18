@@ -17,3 +17,6 @@ class UserOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+class UserDeleteResponse(BaseModel):
+    user_id: int

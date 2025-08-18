@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.user import UserCreate, UserOut, UserUpdate
+from app.schemas.user import UserCreate, UserOut, UserUpdate, UserDeleteResponse
 from app.models.user import User
 from app.crud.user import create_user, update_user, delete_user
 
@@ -29,7 +29,7 @@ def update_user_endpoint(user_id: int, user: UserUpdate, db: Session = Depends(g
     return {"user_id": updated_user.id}
 
 
-@router.delete("/users/delete/{user_id}")
+@router.delete("/users/delete/{user_id}", response_model=UserDeleteResponse)
 def delete_user_endpoint(user_id: int, db: Session = Depends(get_db)):
     success = delete_user(db, user_id)
     if not success:
