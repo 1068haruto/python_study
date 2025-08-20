@@ -9,7 +9,9 @@ USER_PASSWORD = testpassword
 COOKIE_FILE = cookies.txt
 
 
-# 認証関連の確認 -----------------------------------------------------------
+# --------------------------------------------------------
+# 認証関連の確認
+# --------------------------------------------------------
 
 # ログイン（cookies.txtにCookieを保存）
 login:
@@ -29,3 +31,25 @@ check_auth:
 # ユーザー認証（tokenなしの状態）
 check_auth_no_token:
 	@curl -X GET $(BACK_URL)/me
+
+
+# --------------------------------------------------------
+# Python依存関係の管理
+# --------------------------------------------------------
+
+# ディレクトリ・ファイル名との衝突を衝突回避のため
+.PHONY: install freeze
+
+# 依存関係をインストールし、lockファイルを自動更新
+install: backend/requirements.lock
+
+# requirements.txtが更新された場合、lockファイルと依存関係を自動更新するルール
+backend/requirements.lock: backend/requirements.txt
+	@echo "Installing dependencies from requirements.txt..."
+	pip install -r backend/requirements.txt
+	@echo "Freezing dependencies into requirements.lock..."
+	pip freeze > backend/requirements.lock
+
+# 手動でlockファイルを作成/更新
+freeze:
+	pip freeze > backend/requirements.lock
