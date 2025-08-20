@@ -37,13 +37,19 @@ check_auth_no_token:
 # Python依存関係の管理
 # --------------------------------------------------------
 
-# .PHONYを使い、ファイル名との衝突を避けます
+# ディレクトリ・ファイル名との衝突を衝突回避のため
 .PHONY: install freeze
 
-# 依存関係をインストール
-install:
-	pip install -r backend/requirements.txt
+# 依存関係をインストールし、lockファイルを自動更新
+install: backend/requirements.lock
 
-# 現状の依存関係を書き出し
+# requirements.txtが更新された場合、lockファイルと依存関係を自動更新するルール
+backend/requirements.lock: backend/requirements.txt
+	@echo "Installing dependencies from requirements.txt..."
+	pip install -r backend/requirements.txt
+	@echo "Freezing dependencies into requirements.lock..."
+	pip freeze > backend/requirements.lock
+
+# 手動でlockファイルを作成/更新
 freeze:
 	pip freeze > backend/requirements.lock
