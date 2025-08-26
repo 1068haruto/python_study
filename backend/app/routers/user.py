@@ -23,10 +23,19 @@ def get_users(db: Session = Depends(get_db)):
 
 @router.put("/users/update/{user_id}")
 def update_user_endpoint(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
-    updated_user = update_user(db, user_id, user)
-    if updated_user is None:
+    updated_user_info = update_user(db, user_id, user)
+    
+    # ユーザーが見つからない場合
+    if updated_user_info is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return {"user_id": updated_user.id}
+        
+    # updated_user_infoは辞書なので、ブラケット記法でキーにアクセス
+    if updated_user_info.get("updated"):
+        # 更新がある場合
+        return {"user_id": updated_user_info["user_id"], "updated": True}
+    else:
+        # 更新がない場合
+        return {"user_id": updated_user_info["user_id"], "updated": False}
 
 
 @router.delete("/users/delete/{user_id}", response_model=UserDeleteResponse)
