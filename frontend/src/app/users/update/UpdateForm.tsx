@@ -13,10 +13,21 @@ export default function UpdateForm() {
 	const handleSubmit = async (e: React.FormEvent) => {
   	e.preventDefault();
 
+    const isNameEmpty = name.trim() === '';
+    const isPasswordEmpty = password.trim() === '';
+
+    // 未入力で送信された場合、クライアント側で処理を止める
+    if (isNameEmpty && isPasswordEmpty) {
+      setMessage('更新なし。');
+      setUpdatedUserId(null);
+      return;
+    }
+
     try {
       const body: any = {};
-  	  if (name !== '') body.name = name;
-   	  if (password !== '') body.password = password;
+      // rim()で、空白文字だけのデータ送信を防止
+      if (name.trim() !== '') body.name = name;
+      if (password.trim() !== '') body.password = password;
 
       const res = await fetch(`http://localhost:8000/users/update/${userId}`, {
  	  	  method: 'PUT',
@@ -24,15 +35,29 @@ export default function UpdateForm() {
     	  body: JSON.stringify(body),
   	  });
 
+      // 200台以外の場合
       if (!res.ok) {
-        throw new Error('レスポンスが正常ではない。');
+        if (res.status === 404) {
+          setMessage('ユーザーが見つからない。');
+        } else {
+          setMessage('未定義のエラーが発生。');
+        }
+        setUpdatedUserId(null);
+        return;
       }
 
+      // 200台の場合
       const data = await res.json();
-      setMessage('更新成功！');
-      setUpdatedUserId(data.user_id);
+      if (data.updated) {
+        setMessage('更新成功！');
+        setUpdatedUserId(data.user_id);
+      } else {
+        setMessage('更新なし。');
+        setUpdatedUserId(data.user_id);
+      }
     } catch {
       setMessage('更新失敗。');
+      setUpdatedUserId(null);
     }
 	};
 
