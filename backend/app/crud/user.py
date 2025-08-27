@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
-from app.utils.auth import hash_password
+from app.utils.auth import hash_password, verify_password
 
 
 def create_user(db: Session, user: UserCreate):
@@ -28,10 +28,11 @@ def update_user(db: Session, user_id: int, user_data: UserUpdate):
     if user_data.name is not None and user_data.name != db_user.name:
         db_user.name = user_data.name
         updated = True
-
-    if user_data.password is not None and user_data.password:
-        db_user.password = hash_password(user_data.password)
-        updated = True
+    
+    if user_data.password is not None:
+        if not verify_password(user_data.password, db_user.password):
+            db_user.password = hash_password(user_data.password)
+            updated = True
     
     if updated:
         db.commit()

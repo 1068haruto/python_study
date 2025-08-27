@@ -160,6 +160,43 @@ def test_update_user_with_empty_password(client, create_test_user):
     assert any(err["loc"] == ["body", "password"] for err in response.json()["detail"])
 
 
+def test_update_user_no_input(client, create_test_user):
+    """
+    何も入力せずに送信された場合、更新なしとして処理される
+    """
+    created_user_id = create_test_user
+    response = client.put(f"/users/update/{created_user_id}", json={})
+    assert response.status_code == 200
+    assert response.json()["user_id"] == created_user_id
+    assert response.json()["updated"] == False
+
+
+def test_update_user_name_with_same_value(client, create_test_user):
+    """
+    ユーザー名が現状と同じ値の場合、更新なしとして処理される
+    """
+    created_user_id = create_test_user
+    response = client.put(f"/users/update/{created_user_id}", json={
+        "name": "testuser"
+    })
+    assert response.status_code == 200
+    assert response.json()["user_id"] == created_user_id
+    assert response.json()["updated"] == False
+
+
+def test_update_user_password_with_same_value(client, create_test_user):
+    """
+    パスワードが現状と同じ値の場合、更新なしとして処理される
+    """
+    created_user_id = create_test_user
+    response = client.put(f"/users/update/{created_user_id}", json={
+        "password": "testpassword"
+    })
+    assert response.status_code == 200
+    assert response.json()["user_id"] == created_user_id
+    assert response.json()["updated"] == False
+
+
 # --------------------------------------------------------
 # delete
 # --------------------------------------------------------
