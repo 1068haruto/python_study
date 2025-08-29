@@ -6,14 +6,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import LoginForm from './login/LoginForm';
 import LogoutButton from './logout/LogoutButton';
 import CreateForm from './create/CreateForm';
-import DeleteButton from './delete/DeleteButton';
 import UpdateForm from './update/UpdateForm';
 import UserList from './list/UserList';
 import styles from './UsersPage.module.scss';
 
 
 export default function UsersPage() {
-  const [activeTab, setActiveTab] = useState<'login' |'logout' | 'create' | 'list' | 'update' | 'delete' | null>(null);
+  const [activeTab, setActiveTab] = useState<'login' |'logout' | 'create' | 'list' | 'update' | null>(null);
 	const router = useRouter();
   const { user } = useAuth();
 
@@ -34,7 +33,6 @@ export default function UsersPage() {
             <button onClick={() => setActiveTab('logout')}>ログアウト</button>
             <button onClick={() => setActiveTab('list')}>一覧</button>
             <button onClick={() => setActiveTab('update')}>更新</button>
-				    <button onClick={() => setActiveTab('delete')}>削除</button>
             <button onClick={() => router.push('/')}>ホームに戻る</button>
           </>
         )}
@@ -47,8 +45,7 @@ export default function UsersPage() {
         {activeTab === 'create' && <CreateForm />}
         {activeTab === 'list' && user && <UserList />}
         {activeTab === 'update' && user && <UpdateForm />}
-        {activeTab === 'delete' && user && <DeleteButton />}
-        {!activeTab && <p>操作を選択してください。</p>}
+        {!activeTab && <p>操作を選択。</p>}
       </div>
     </main>
   );
