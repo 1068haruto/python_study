@@ -9,9 +9,12 @@
     list-style: none;
 
     li {
-      background: rgb(29, 29, 29);
-      padding: 8px;
+      display: flex;
+      justify-content: space-between; // 要素を左右に配置
+      align-items: center;            // 縦の中央
       margin-bottom: 10px;
+      padding: 8px;
+      background: rgb(29, 29, 29);
       color: #ccc;
     }
   }
